@@ -13,15 +13,15 @@ class Board(tk.Frame):
         self.tempBoard = []
         self.size = 8
         
-        canvas_width = self.x * self.size
-        canvas_height = self.y * self.size 
+        self.canvas_width = self.x * self.size
+        self.canvas_height = self.y * self.size 
                 
         tk.Frame.__init__(self, parent)
         
         self.canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0,
-                                width=canvas_width, height=canvas_height, background="white")
+                                width=self.canvas_width, height=self.canvas_height, background="white")
         self.canvas.pack(side="top", fill="both", expand=True, padx=2, pady=2)
-        
+
         
     def createBoard(self):
         """
@@ -116,22 +116,39 @@ class Board(tk.Frame):
                     # More than 3 neighbours, dies
                     if nbs > 3:
                         self.board[x][y] = 0
-                        
     
+    def redraw(self):
+        """
+            Redraw the board
+        """
+        xsize = int((self.canvas_width-1) / self.x)
+        ysize = int((self.canvas_height-1) / self.y)
+        self.size = min(xsize, ysize)
+        
+        self.canvas.delete("square")
+        
+        for x in range(self.x):
+            for y in range(self.y):
+                x1 = x * self.size
+                y1 = y * self.size
+                x2 = x1 + self.size
+                y2 = y1 + self.size
+                if self.board[x][y] == 1:
+                    self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill="black", tags="square")
 
+        self.update()        
+        self.after(50, self.redraw)
+    
 if __name__ == '__main__':
     root = tk.Tk()
     
-    dims = (10,10)
+    dims = (30,30)
     gens = 5
     
     board = Board(root, dims)
-    board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-    root.mainloop()
+    board.pack(side="top", fill="both", expand=True, padx=2, pady=2)
+    board.randomSeed(0.1)
+   
+    board.redraw()
     
-'''board.randomSeed(0.2)
-    board.printBoard()
-    
-    for each in range(gens):
-        board.update()
-        board.printBoard()'''     
+    root.mainloop()   

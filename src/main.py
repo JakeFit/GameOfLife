@@ -31,7 +31,7 @@ class Board(object):
         for row in self.board:
             print row
             
-        print ""
+        print ""    
         
     def randomSeed(self, prob):
         """
@@ -43,6 +43,14 @@ class Board(object):
                 if not(x == 0 or x == self.x-1 or y == 0 or y == self.y-1):
                     if random.random() < prob:
                         self.board[x][y] = 1
+
+    def inputBoard(self, positions):
+        """
+            Allow the user to specify a board by supplying a list of positions to be alive.
+        """
+        for (x,y) in positions:
+            self.board[x][y] = 1
+            
 
     def neighbours(self, x, y):
         """
@@ -69,7 +77,7 @@ class Board(object):
                     nbs.append(self.tempBoard[x + dirx][y + diry])
                     
         return nbs        
-
+            
     def update(self):
         """
             Iterate over the cells of the board and update them according to

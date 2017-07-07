@@ -2,14 +2,26 @@ import numpy as np
 import random
 import copy
 import os
+import Tkinter as tk
 
-class Board(object):
+class Board(tk.Frame):
     
-    def __init__(self, dims):
+    def __init__(self, parent, dims):
         self.x = dims[0]
         self.y = dims[1]
         self.board = self.createBoard()
         self.tempBoard = []
+        self.size = 8
+        
+        canvas_width = self.x * self.size
+        canvas_height = self.y * self.size 
+                
+        tk.Frame.__init__(self, parent)
+        
+        self.canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0,
+                                width=canvas_width, height=canvas_height, background="white")
+        self.canvas.pack(side="top", fill="both", expand=True, padx=2, pady=2)
+        
         
     def createBoard(self):
         """
@@ -108,13 +120,18 @@ class Board(object):
     
 
 if __name__ == '__main__':
+    root = tk.Tk()
+    
     dims = (10,10)
     gens = 5
-
-    board = Board(dims)
-    board.randomSeed(0.2)
+    
+    board = Board(root, dims)
+    board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
+    root.mainloop()
+    
+'''board.randomSeed(0.2)
     board.printBoard()
     
     for each in range(gens):
         board.update()
-        board.printBoard()
+        board.printBoard()'''     

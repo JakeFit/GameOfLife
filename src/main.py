@@ -85,9 +85,8 @@ class Board(tk.Frame):
         dirs = [-1, 0, 1]
         for dirx in dirs:
             for diry in dirs:
-                if not((dirx == diry) and (dirx == 0)):
+                if not((diry == 0) and (dirx == 0)):
                     nbs.append(self.tempBoard[x + dirx][y + diry])
-                    
         return nbs        
             
     def update(self):
@@ -105,7 +104,6 @@ class Board(tk.Frame):
                 # If the cell is dead and has 3 live neighbours, they reporoduce.
                 if (cell == 0 and nbs == 3):
                     self.board[x][y] = 1
-                    break
                     
                 if cell == 1:
                     # Implicit if equal to two or three, lives
@@ -137,18 +135,18 @@ class Board(tk.Frame):
                     self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill="black", tags="square")
 
         self.update()        
-        self.after(50, self.redraw)
+        self.after(10, self.redraw)
     
 if __name__ == '__main__':
     root = tk.Tk()
     
-    dims = (30,30)
+    dims = (200,200)
     gens = 5
     
     board = Board(root, dims)
     board.pack(side="top", fill="both", expand=True, padx=2, pady=2)
-    board.randomSeed(0.1)
-   
+    board.randomSeed(0.07)
+    # glider board.inputBoard([(10,10), (11,10), (12,10), (12,9), (11,8)])
     board.redraw()
     
     root.mainloop()   

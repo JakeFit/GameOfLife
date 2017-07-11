@@ -13,7 +13,7 @@ class Board(tk.Frame):
         self.width = self.x - 1
         self.height = self.y - 1
         
-        self.GAME_SPEED = 1000
+        self.GAME_SPEED = 10
         
         self.board = self.createBoard()
         self.tempBoard = []
@@ -58,7 +58,6 @@ class Board(tk.Frame):
         
         for x in range(self.x):
             for y in range(self.y):
-                if not(x == 0 or x == self.x-1 or y == 0 or y == self.y-1):
                     if random.random() < prob:
                         self.board[x][y] = 1
 
@@ -160,12 +159,12 @@ class Board(tk.Frame):
 if __name__ == '__main__':
     root = tk.Tk()
     
-    dims = (100,50)
+    dims = (50,50)
     
     board = Board(root, dims)
     board.pack(side="top", fill="both", expand=True, padx=2, pady=2)
-    board.randomSeed(0.2)
-    # glider board.inputBoard([(10,10), (11,10), (12,10), (12,9), (11,8)])
+    #board.randomSeed(0.2)
+    board.inputBoard([(10,10), (11,10), (12,10), (12,9), (11,8)])
     board.redraw()
     
     root.mainloop()   

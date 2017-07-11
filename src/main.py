@@ -9,6 +9,12 @@ class Board(tk.Frame):
     def __init__(self, parent, dims):
         self.x = dims[0]
         self.y = dims[1]
+        
+        self.width = self.x - 1
+        self.height = self.y - 1
+        
+        self.GAME_SPEED = 1000
+        
         self.board = self.createBoard()
         self.tempBoard = []
         self.size = 8
@@ -84,9 +90,23 @@ class Board(tk.Frame):
         nbs = []
         dirs = [-1, 0, 1]
         for dirx in dirs:
+            if (x == 0) and (dirx == -1):
+                dirx = self.width
+                
+            if (x == self.width) and (dirx == 1):
+                dirx = -self.width 
+                
             for diry in dirs:
+                if (y == 0) and (diry == -1):
+                    diry = self.height
+                
+                if (y == self.height) and (diry == 1):
+                    diry = -self.height 
+                
                 if not((diry == 0) and (dirx == 0)):
+
                     nbs.append(self.tempBoard[x + dirx][y + diry])
+                    
         return nbs        
             
     def update(self):
@@ -95,8 +115,8 @@ class Board(tk.Frame):
             the rules of Conway's Game of Life.
         """
         self.tempBoard = copy.deepcopy(self.board)
-        for x in range(1, self.x - 1):
-            for y in range(1, self.y - 1):
+        for x in range(self.x):
+            for y in range(self.y):
                 # Get value of neighbours
                 nbs = sum(self.neighbours(x, y))
                 cell = self.tempBoard[x][y] 
@@ -135,17 +155,16 @@ class Board(tk.Frame):
                     self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill="black", tags="square")
 
         self.update()        
-        self.after(10, self.redraw)
+        self.after(self.GAME_SPEED, self.redraw)
     
 if __name__ == '__main__':
     root = tk.Tk()
     
-    dims = (200,200)
-    gens = 5
+    dims = (100,50)
     
     board = Board(root, dims)
     board.pack(side="top", fill="both", expand=True, padx=2, pady=2)
-    board.randomSeed(0.07)
+    board.randomSeed(0.2)
     # glider board.inputBoard([(10,10), (11,10), (12,10), (12,9), (11,8)])
     board.redraw()
     
